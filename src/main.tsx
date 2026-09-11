@@ -275,7 +275,7 @@ function ContactPage() {
   const order = () => document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
 
   useEffect(() => {
-    document.title = isOrder ? 'Order Online | Miss Louise Bakery' : 'Contact Us | Miss Louise Bakery'
+    document.title = isOrder ? 'Order Inquiry | Miss Louise Bakery' : 'Contact Us | Miss Louise Bakery'
     return () => { document.title = 'Miss Louise Bakery' }
   }, [isOrder])
 
@@ -293,7 +293,7 @@ function ContactPage() {
       details: String(data.get('details') || ''),
       website: String(data.get('website') || ''),
     }
-    setNotice(`Sending your ${isOrder ? 'order request' : 'inquiry'}…`)
+    setNotice('Sending your inquiry…')
     setSending(true)
 
     try {
@@ -307,7 +307,7 @@ function ContactPage() {
       form.reset()
       const destinations = result.delivered?.join(' and ') || 'the bakery'
       const partial = result.failed?.length ? ` ${result.failed.join(' and ')} delivery needs attention.` : ''
-      setNotice(`Thank you! Your ${isOrder ? 'order request' : 'inquiry'} was delivered to ${destinations}.${partial}`)
+      setNotice(`Thank you! Your inquiry was delivered to ${destinations}. This is not a confirmed order—please be on the lookout for our response soon.${partial}`)
     } catch {
       const message = [
         `Hi Miss Louise Bakery! I would love to ${isOrder ? 'place an order' : 'send an inquiry'}.`, '',
@@ -328,9 +328,9 @@ function ContactPage() {
 
     <section className="contact-hero">
       <div className="contact-hero-copy">
-        <span className="eyebrow plain">{isOrder ? 'Online ordering' : 'We’d love to hear from you'}</span>
-        <h1>{isOrder ? <>Order something<br/><em>sweet.</em></> : <>Let’s make<br/><em>something sweet.</em></>}</h1>
-        <p>{isOrder ? 'Choose what you’re craving and send us the details. We’ll follow up to confirm availability, pickup, and payment.' : 'Planning a celebration, craving a cookie box, or wondering what is available? Tell us what you have in mind.'}</p>
+        <span className="eyebrow plain">{isOrder ? 'Order inquiries' : 'We’d love to hear from you'}</span>
+        <h1>{isOrder ? <>Ask about something<br/><em>sweet.</em></> : <>Let’s make<br/><em>something sweet.</em></>}</h1>
+        <p>{isOrder ? 'Tell us what you’re craving. This form is an inquiry, not a confirmed order—we’ll respond soon with availability, pickup, and payment details.' : 'Planning a celebration, craving a cookie box, or wondering what is available? Tell us what you have in mind.'}</p>
       </div>
       <div className="contact-hero-photo">
         <img src="/assets/chocolate-chip-cookies.JPG" alt="Freshly baked Miss Louise Bakery chocolate chip cookies" />
@@ -340,7 +340,7 @@ function ContactPage() {
 
     <section className="contact-main section-pad">
       <form id="inquiry-form" className="contact-form" onSubmit={sendInquiry}>
-        <div className="contact-form-heading"><span className="eyebrow plain">{isOrder ? 'Start your order' : 'Start an inquiry'}</span><h2>Tell us the<br/><em>sweet details.</em></h2></div>
+        <div className="contact-form-heading"><span className="eyebrow plain">Start an inquiry</span><h2>Tell us the<br/><em>sweet details.</em></h2></div>
         <div className="form-grid">
           <label><span>Your name</span><input name="name" type="text" autoComplete="name" required placeholder="First and last name" /></label>
           <label><span>Best way to reply</span><input name="reply" type="text" required placeholder="Instagram handle or phone" /></label>
@@ -349,8 +349,8 @@ function ContactPage() {
           <label className="form-wide"><span>Tell us more</span><textarea name="details" required rows={6} placeholder="Quantity, flavors, occasion, colors, inspiration, or any questions…" /></label>
           <label className="honeypot" aria-hidden="true"><span>Website</span><input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
         </div>
-        <button className="button button-red" type="submit" disabled={sending}>{sending ? 'Sending…' : isOrder ? 'Send order request' : 'Send inquiry'} {!sending && <ArrowRight size={17}/>}</button>
-        <p className="form-note">{isOrder ? 'This is an order request, not a final confirmation. The bakery will reply with availability, pickup, and payment details. ' : ''}Your information is sent privately by email and Discord.</p>
+        <button className="button button-red" type="submit" disabled={sending}>{sending ? 'Sending…' : 'Send inquiry'} {!sending && <ArrowRight size={17}/>}</button>
+        <p className="form-note">Submitting this form sends an inquiry, not a confirmed order. Please be on the lookout for our response soon. Your information is sent privately by email and Discord.</p>
       </form>
 
       <aside className="contact-details">
