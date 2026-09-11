@@ -1,5 +1,6 @@
 # Copy this file to .dev.vars for local Cloudflare Pages development.
 # Never commit or share the real webhook URL or API key.
+# Create this webhook inside the Discord #orders channel.
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/your-webhook-id/your-webhook-token
 RESEND_API_KEY=re_your_resend_api_key
 CONTACT_TO_EMAIL=aspenlax30@gmail.com
