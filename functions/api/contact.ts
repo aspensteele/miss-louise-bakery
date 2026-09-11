@@ -6,6 +6,7 @@ interface ContactEnvironment {
 }
 
 interface ContactInquiry {
+  type: 'order' | 'inquiry'
   name: string
   reply: string
   inquiry: string
@@ -29,17 +30,17 @@ async function notifyDiscord(webhookUrl: string, inquiry: ContactInquiry) {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
-      username: 'Miss Louise Bakery Inquiries',
+      username: 'Miss Louise Bakery Orders',
       allowed_mentions: { parse: [] },
       embeds: [{
-        title: 'New bakery inquiry',
+        title: inquiry.type === 'order' ? 'New online order request' : 'New bakery inquiry',
         color: 0xf00b0d,
         fields: [
           { name: 'Name', value: inquiry.name, inline: true },
           { name: 'Best way to reply', value: inquiry.reply, inline: true },
           { name: 'Inquiry', value: inquiry.inquiry, inline: true },
           { name: 'Date needed', value: inquiry.date || 'Flexible', inline: true },
-          { name: 'Details', value: inquiry.details },
+          { name: 'Details', value: inquiry.details.slice(0, 1024) },
         ],
         timestamp: new Date().toISOString(),
       }],
@@ -60,7 +61,7 @@ async function sendEmail(apiKey: string, from: string, to: string, inquiry: Cont
       from,
       to: [to],
       reply_to: inquiry.reply.includes('@') ? inquiry.reply : undefined,
-      subject: `Miss Louise Bakery inquiry from ${inquiry.name}`,
+      subject: `Miss Louise Bakery ${inquiry.type === 'order' ? 'order request' : 'inquiry'} from ${inquiry.name}`,
       text: [
         `Name: ${inquiry.name}`,
         `Best way to reply: ${inquiry.reply}`,
@@ -69,7 +70,7 @@ async function sendEmail(apiKey: string, from: string, to: string, inquiry: Cont
         '',
         inquiry.details,
       ].join('\n'),
-      html: `<h2>New bakery inquiry</h2>
+      html: `<h2>${inquiry.type === 'order' ? 'New online order request' : 'New bakery inquiry'}</h2>
         <p><strong>Name:</strong> ${escapeHtml(inquiry.name)}</p>
         <p><strong>Best way to reply:</strong> ${escapeHtml(inquiry.reply)}</p>
         <p><strong>Inquiry:</strong> ${escapeHtml(inquiry.inquiry)}</p>
@@ -91,6 +92,7 @@ export const onRequestPost = async ({ request, env }: { request: Request, env: C
   if (clean(input.website, 100)) return json({ ok: true })
 
   const inquiry: ContactInquiry = {
+    type: clean(input.type, 20) === 'order' ? 'order' : 'inquiry',
     name: clean(input.name, 100),
     reply: clean(input.reply, 160),
     inquiry: clean(input.inquiry, 100),

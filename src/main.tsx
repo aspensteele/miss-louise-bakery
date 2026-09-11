@@ -10,6 +10,14 @@ const goTo = (path: string) => {
   window.dispatchEvent(new PopStateEvent('popstate'))
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+const startOrder = () => goTo('/contact?order=1')
+function InstagramIcon() {
+  return <svg className="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="18" height="18" x="3" y="3" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+  </svg>
+}
 function Logo() {
   return <button className="logo" onClick={() => goTo('/')} aria-label="Miss Louise Bakery home">
     <img src="/assets/logo-transparent.png" alt="Miss Louise Bakery" />
@@ -39,7 +47,7 @@ function SiteFooter() {
 
 function HomePage() {
   const [notice, setNotice] = useState('')
-  const order = () => setNotice('Sweet! Ordering is coming online soon — please reach out on Instagram to reserve your treats.')
+  const order = startOrder
 
   return <main id="top">
     <div className="announcement">Made from scratch in Galveston, Texas <span>✦</span> Baked with love</div>
@@ -80,6 +88,24 @@ function HomePage() {
       </div>
     </section>
 
+    <section className="fresh-gallery section-pad" aria-labelledby="fresh-gallery-title">
+      <div className="fresh-gallery-heading">
+        <span className="eyebrow plain">A peek at what we’re baking</span>
+        <h2 id="fresh-gallery-title">Made fresh,<br/><em>made happy.</em></h2>
+      </div>
+      <div className="fresh-gallery-grid">
+        <figure className="fresh-photo fresh-photo-wide">
+          <img src="/assets/sprinkle-cookie.jpg" alt="Freshly baked sprinkle cookies cooling on a tray" loading="lazy" />
+        </figure>
+        <figure className="fresh-photo">
+          <img src="/assets/star-cookie.jpg" alt="Star-cut sandwich cookies dusted with powdered sugar" loading="lazy" />
+        </figure>
+        <figure className="fresh-photo">
+          <img src="/assets/yummy-dessert.JPG" alt="Fresh blueberry desserts baked in pink tins" loading="lazy" />
+        </figure>
+      </div>
+    </section>
+
     <section className="bakery-film" aria-label="A look inside Miss Louise Bakery">
       <video autoPlay muted loop playsInline controls preload="metadata" poster="/assets/image.jpeg">
         <source src="/assets/PltNSAn0bgXuqMDRmMCfz.mp4" type="video/mp4" />
@@ -110,7 +136,7 @@ function HomePage() {
       </div>
     </section>
 
-    <section id="visit" className="visit"><div><span className="eyebrow plain">Come say hello</span><h2>Find your next<br/><em>favorite treat.</em></h2></div><div className="visit-card"><p>Serving up sweet things in</p><h3>Galveston, Texas</h3><a href="https://www.instagram.com/miss_louise_bakery" target="_blank" rel="noreferrer">Follow along <span className="instagram-glyph">◎</span></a></div></section>
+    <section id="visit" className="visit"><div><span className="eyebrow plain">Come say hello</span><h2>Find your next<br/><em>favorite treat.</em></h2></div><div className="visit-card"><p>Serving up sweet things in</p><h3>Galveston, Texas</h3><a href="https://www.instagram.com/miss_louise_bakery" target="_blank" rel="noreferrer">Follow along <InstagramIcon /></a></div></section>
     <SiteFooter />
     {notice && <div className="toast" role="status">{notice}<button onClick={() => setNotice('')}>×</button></div>}
   </main>
@@ -118,7 +144,7 @@ function HomePage() {
 
 function AboutPage() {
   const [notice, setNotice] = useState('')
-  const order = () => setNotice('Sweet! Ordering is coming online soon — please reach out on Instagram to reserve your treats.')
+  const order = startOrder
 
   useEffect(() => {
     document.title = 'Our Story | Miss Louise Bakery'
@@ -201,7 +227,7 @@ function AboutPage() {
 
 function MenuPage() {
   const [notice, setNotice] = useState('')
-  const order = () => setNotice('Sweet! Ordering is coming online soon — please reach out on Instagram to reserve your treats.')
+  const order = startOrder
 
   useEffect(() => {
     document.title = 'Menu | Miss Louise Bakery'
@@ -234,7 +260,7 @@ function MenuPage() {
 
     <section className="menu-bottom-cta">
       <div><span className="eyebrow plain">Need something special?</span><h2>Let’s make your day<br/><em>a little sweeter.</em></h2></div>
-      <a className="button button-outline" href="https://www.instagram.com/miss_louise_bakery" target="_blank" rel="noreferrer">Message us <ArrowRight size={17}/></a>
+      <a className="button button-outline" href="https://www.instagram.com/miss_louise_bakery" target="_blank" rel="noreferrer">Message us <InstagramIcon /></a>
     </section>
 
     <SiteFooter />
@@ -244,12 +270,14 @@ function MenuPage() {
 
 function ContactPage() {
   const [notice, setNotice] = useState('')
+  const [sending, setSending] = useState(false)
+  const isOrder = new URLSearchParams(window.location.search).get('order') === '1'
   const order = () => document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
 
   useEffect(() => {
-    document.title = 'Contact Us | Miss Louise Bakery'
+    document.title = isOrder ? 'Order Online | Miss Louise Bakery' : 'Contact Us | Miss Louise Bakery'
     return () => { document.title = 'Miss Louise Bakery' }
-  }, [])
+  }, [isOrder])
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -257,6 +285,7 @@ function ContactPage() {
     const data = new FormData(form)
     const name = String(data.get('name') || '')
     const inquiry = {
+      type: isOrder ? 'order' : 'inquiry',
       name,
       reply: String(data.get('reply') || ''),
       inquiry: String(data.get('inquiry') || ''),
@@ -264,7 +293,8 @@ function ContactPage() {
       details: String(data.get('details') || ''),
       website: String(data.get('website') || ''),
     }
-    setNotice('Sending your inquiry…')
+    setNotice(`Sending your ${isOrder ? 'order request' : 'inquiry'}…`)
+    setSending(true)
 
     try {
       const response = await fetch('/api/contact', {
@@ -272,20 +302,23 @@ function ContactPage() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(inquiry),
       })
-      const result = await response.json() as { delivered?: string[], error?: string }
+      const result = await response.json() as { delivered?: string[], failed?: string[], error?: string }
       if (!response.ok) throw new Error(result.error || 'Delivery failed')
       form.reset()
       const destinations = result.delivered?.join(' and ') || 'the bakery'
-      setNotice(`Thank you! Your inquiry was delivered to ${destinations}.`)
+      const partial = result.failed?.length ? ` ${result.failed.join(' and ')} delivery needs attention.` : ''
+      setNotice(`Thank you! Your ${isOrder ? 'order request' : 'inquiry'} was delivered to ${destinations}.${partial}`)
     } catch {
       const message = [
-        'Hi Miss Louise Bakery! I would love to ask about an order.', '',
+        `Hi Miss Louise Bakery! I would love to ${isOrder ? 'place an order' : 'send an inquiry'}.`, '',
         `Name: ${inquiry.name}`, `Best way to reply: ${inquiry.reply}`,
         `Inquiry: ${inquiry.inquiry}`, `Date needed: ${inquiry.date || 'Flexible'}`,
         `Details: ${inquiry.details}`,
       ].join('\n')
       window.location.href = `mailto:aspenlax30@gmail.com?subject=${encodeURIComponent(`Miss Louise Bakery inquiry from ${name}`)}&body=${encodeURIComponent(message)}`
       setNotice('Online delivery is not configured yet, so your email app is opening instead.')
+    } finally {
+      setSending(false)
     }
   }
 
@@ -295,19 +328,19 @@ function ContactPage() {
 
     <section className="contact-hero">
       <div className="contact-hero-copy">
-        <span className="eyebrow plain">We’d love to hear from you</span>
-        <h1>Let’s make<br/><em>something sweet.</em></h1>
-        <p>Planning a celebration, craving a cookie box, or wondering what is available? Tell us what you have in mind.</p>
+        <span className="eyebrow plain">{isOrder ? 'Online ordering' : 'We’d love to hear from you'}</span>
+        <h1>{isOrder ? <>Order something<br/><em>sweet.</em></> : <>Let’s make<br/><em>something sweet.</em></>}</h1>
+        <p>{isOrder ? 'Choose what you’re craving and send us the details. We’ll follow up to confirm availability, pickup, and payment.' : 'Planning a celebration, craving a cookie box, or wondering what is available? Tell us what you have in mind.'}</p>
       </div>
       <div className="contact-hero-photo">
-        <img src="/assets/IMG_2689.jpeg" alt="A box of Miss Louise Bakery cookies ready to share" />
+        <img src="/assets/chocolate-chip-cookies.JPG" alt="Freshly baked Miss Louise Bakery chocolate chip cookies" />
         <img className="contact-cherries" src="/assets/cherry-transparent.png" alt="" aria-hidden="true" />
       </div>
     </section>
 
     <section className="contact-main section-pad">
       <form id="inquiry-form" className="contact-form" onSubmit={sendInquiry}>
-        <div className="contact-form-heading"><span className="eyebrow plain">Start an inquiry</span><h2>Tell us the<br/><em>sweet details.</em></h2></div>
+        <div className="contact-form-heading"><span className="eyebrow plain">{isOrder ? 'Start your order' : 'Start an inquiry'}</span><h2>Tell us the<br/><em>sweet details.</em></h2></div>
         <div className="form-grid">
           <label><span>Your name</span><input name="name" type="text" autoComplete="name" required placeholder="First and last name" /></label>
           <label><span>Best way to reply</span><input name="reply" type="text" required placeholder="Instagram handle or phone" /></label>
@@ -316,8 +349,8 @@ function ContactPage() {
           <label className="form-wide"><span>Tell us more</span><textarea name="details" required rows={6} placeholder="Quantity, flavors, occasion, colors, inspiration, or any questions…" /></label>
           <label className="honeypot" aria-hidden="true"><span>Website</span><input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
         </div>
-        <button className="button button-red" type="submit">Send inquiry <ArrowRight size={17}/></button>
-        <p className="form-note">Your inquiry is sent privately to the bakery. If online delivery is unavailable, your email app will open as a fallback.</p>
+        <button className="button button-red" type="submit" disabled={sending}>{sending ? 'Sending…' : isOrder ? 'Send order request' : 'Send inquiry'} {!sending && <ArrowRight size={17}/>}</button>
+        <p className="form-note">{isOrder ? 'This is an order request, not a final confirmation. The bakery will reply with availability, pickup, and payment details. ' : ''}Your information is sent privately by email and Discord.</p>
       </form>
 
       <aside className="contact-details">
@@ -325,7 +358,7 @@ function ContactPage() {
         <span className="eyebrow plain">From our home to yours</span>
         <h2>Galveston,<br/>Texas</h2>
         <p>Miss Louise is a home-based bakery. Pickup and order details are shared privately after your inquiry is confirmed.</p>
-        <a href="https://www.instagram.com/miss_louise_bakery" target="_blank" rel="noreferrer">@miss_louise_bakery ↗</a>
+        <a href="https://www.instagram.com/miss_louise_bakery" target="_blank" rel="noreferrer"><InstagramIcon /> @miss_louise_bakery</a>
         <div className="contact-steps"><div><b>01</b><span>Send your idea</span></div><div><b>02</b><span>Confirm details</span></div><div><b>03</b><span>Enjoy your treats</span></div></div>
       </aside>
     </section>
