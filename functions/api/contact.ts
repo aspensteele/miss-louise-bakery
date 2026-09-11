@@ -110,7 +110,7 @@ export const onRequestPost = async ({ request, env }: { request: Request, env: C
     channels.push('Discord')
   }
   if (env.RESEND_API_KEY && env.CONTACT_FROM_EMAIL) {
-    tasks.push(sendEmail(env.RESEND_API_KEY, env.CONTACT_FROM_EMAIL, env.CONTACT_TO_EMAIL || 'aspenlax30@gmail.com', inquiry))
+    tasks.push(sendEmail(env.RESEND_API_KEY, env.CONTACT_FROM_EMAIL, env.CONTACT_TO_EMAIL || 'hello@misslouisebakery.com', inquiry))
     channels.push('email')
   }
   if (!tasks.length) return json({ error: 'Contact delivery is not configured.' }, 503)

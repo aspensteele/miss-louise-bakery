@@ -315,7 +315,7 @@ function ContactPage() {
         `Inquiry: ${inquiry.inquiry}`, `Date needed: ${inquiry.date || 'Flexible'}`,
         `Details: ${inquiry.details}`,
       ].join('\n')
-      window.location.href = `mailto:aspenlax30@gmail.com?subject=${encodeURIComponent(`Miss Louise Bakery inquiry from ${name}`)}&body=${encodeURIComponent(message)}`
+      window.location.href = `mailto:hello@misslouisebakery.com?subject=${encodeURIComponent(`Miss Louise Bakery inquiry from ${name}`)}&body=${encodeURIComponent(message)}`
       setNotice('Online delivery is not configured yet, so your email app is opening instead.')
     } finally {
       setSending(false)
