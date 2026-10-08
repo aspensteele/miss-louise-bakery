@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ArrowRight, Menu, ShoppingBag, X } from 'lucide-react'
+import { ArrowRight, Calendar, MapPin, Menu, ShoppingBag, X } from 'lucide-react'
 import './styles.css'
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -68,7 +68,7 @@ function HomePage() {
       </div>
     </section>
 
-    <section className="ticker" aria-label="Bakery offerings"><span>COOKIES</span><b>✦</b><span>BROWNIES</span><b>✦</b><span>COOKIE BOXES</span><b>✦</b><span>CELEBRATIONS</span><b>✦</b><span>COOKIES</span></section>
+    <section className="ticker" aria-label="Bakery offerings"><span>COOKIES</span><b>✦</b><span>BROWNIES</span><b>✦</b><span>CUPCAKES</span><b>✦</b><span>CELEBRATIONS</span><b>✦</b><span>& SO MUCH MORE</span><b>✦</b></section>
 
     <section id="menu" className="favorites section-pad">
       <div className="section-heading"><div><span className="eyebrow plain">A little something sweet</span><h2>Fresh from the <em>oven</em></h2></div><button className="text-button" onClick={() => goTo('/menu')}>See the full menu <span>→</span></button></div>
@@ -108,7 +108,7 @@ function HomePage() {
 
     <section className="bakery-film" aria-label="A look inside Miss Louise Bakery">
       <video autoPlay muted loop playsInline controls preload="metadata" poster="/assets/image.jpeg">
-        <source src="/assets/PltNSAn0bgXuqMDRmMCfz.mp4" type="video/mp4" />
+        <source src="/assets/IMG_0705.mov" type="video/mp4" />
       </video>
       <div className="film-caption">
         <span className="eyebrow plain">Meet the cookie lineup</span>
@@ -124,6 +124,8 @@ function HomePage() {
       <p className="story-copy">Miss Louise Bakery is a love letter to the simple joy of something homemade. We believe a cookie can turn a day around, a cake can say what words can’t, and there’s always room for dessert.</p>
       <button className="button button-outline" onClick={() => goTo('/about')}>Read our story <ArrowRight size={17}/></button>
     </section>
+
+    
 
     <section className="reviews section-pad">
       <div className="reviews-heading">
@@ -152,76 +154,128 @@ function AboutPage() {
   }, [])
 
   return <main id="top" className="about-page">
-    <div className="announcement">Made from scratch in Galveston, Texas <span>✦</span> Baked with love</div>
+    <div className="announcement">
+      Made from scratch in Galveston, Texas <span>✦</span> Baked with love
+    </div>
+
     <SiteHeader onOrder={order} />
 
     <section className="about-hero">
       <div className="about-hero-copy">
         <span className="eyebrow plain">The heart behind the bakery</span>
-        <h1>Home-baked<br/><em>happiness.</em></h1>
-        <p>Miss Louise Bakery began with a love for homemade desserts and the joy that comes from sharing them with others.</p>
-        <img className="about-hero-cherries" src="/assets/cherry-transparent.png" alt="" aria-hidden="true" />
+        <h1>A little about the<br/><em>people behind Miss Louise Bakery!</em></h1>
+        <p>
+          My name is Abby Johnson and I started this as a way to remember my great grandmother who taught me to bake when I was little!
+        </p>
+        <img
+          className="about-hero-cherries"
+          src="/assets/cherry-transparent.png"
+          alt=""
+          aria-hidden="true"
+        />
       </div>
+
       <div className="about-collage" aria-label="Miss Louise Bakery desserts">
-        <img className="about-photo-main" src="/assets/cupcakes.jpeg" alt="Homemade cupcakes topped with swirls of pink frosting" />
-        <img className="about-photo-small" src="/assets/cookies.png" alt="Fresh chocolate chip cookies with colorful candy pieces" />
-        <div className="about-photo-note">FROM OUR HOME<br/><b>TO YOURS</b></div>
+        <img
+          className="about-photo-main"
+          src="/assets/cupcakes.jpeg"
+          alt="Homemade cupcakes topped with swirls of pink frosting"
+        />
+        <img
+          className="about-photo-small"
+          src="/assets/cookies.png"
+          alt="Fresh chocolate chip cookies with colorful candy pieces"
+        />
+        <div className="about-photo-note">
+          FROM OUR HOME<br/><b>TO YOURS</b>
+        </div>
       </div>
     </section>
 
     <section className="about-origin section-pad">
       <div className="origin-heading">
-        <span className="eyebrow plain">How it all started</span>
-        <h2>Made with love,<br/><em>from scratch.</em></h2>
+        <span className="eyebrow plain">Meet the baker</span>
+        <h2>From Muh's kitchen<br/><em>to yours.</em></h2>
       </div>
-      <div className="origin-copy">
-        <p>Miss Louise Bakery is a home-based bakery established from our love for homemade desserts and the joy we get from sharing them with others. Our desserts are made with love, the best ingredients, and a true passion for baking—and that is what makes them special.</p>
-        <p>What began as making desserts for friends and family has grown into a small home bakery with a simple aim: to bring our community delicious, homemade desserts. From cookies and cupcakes to our specialty sweets, everything is lovingly made from scratch.</p>
-      </div>
-    </section>
 
-    <section className="about-values section-pad">
-      <div className="values-intro">
-        <span className="eyebrow plain">What matters to us</span>
-        <h2>Our recipe is<br/><em>pretty simple.</em></h2>
-      </div>
-      <div className="values-grid">
-        <article><span>01</span><h3>Homemade</h3><p>Every dessert is thoughtfully made from scratch in our home bakery.</p></article>
-        <article><span>02</span><h3>Good ingredients</h3><p>We choose quality ingredients because every delicious detail matters.</p></article>
-        <article><span>03</span><h3>Shared joy</h3><p>We bake to bring people together and make all kinds of days sweeter.</p></article>
+      <div className="origin-copy">
+        <p>
+          She recently passed in January of 2026 and I wanted everyone to share in the memory that her treats held with me!
+        </p>
+
+        <p>
+          I dream to open up a bakery one day and to have her name (Miss Louise) mean something to everyone else as much as it means to me!
+        </p>
+
+        <p>
+          I knew her as Muh, her community knew her as Miss Louise but she was a daughter, mom, wife, grandmother, and great grandmother! Muh I miss you every day and am reminded of you with every treat I make whether that’s a cookie, cake, Rice Krispie treat or cupcake.
+        </p>
+        
+        <p>
+          I can hear her saying, “Measure with your heart” (especially with vanilla)! 
+        </p>
       </div>
     </section>
 
     <section className="about-bts">
       <div className="about-bts-copy">
         <span className="eyebrow plain">Behind the scenes</span>
-        <h2>Where the magic<br/><em>gets made.</em></h2>
-        <p>A little look at the care, creativity, and hands-on work that goes into every Miss Louise treat.</p>
+        <h2>
+          Baking with<br/><em>all our heart.</em>
+        </h2>
+        <p>
+          Every batch starts with warm memories and a love for creating something special to share with our community in Galveston.
+        </p>
       </div>
-      <video autoPlay controls muted loop playsInline preload="metadata" poster="/assets/cookies2.jpeg">
-        <source src="/assets/behind-the-scenes.mp4" type="video/mp4" />
+
+      <video
+        autoPlay
+        controls
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/assets/cookies2.jpeg"
+      >
+        <source
+          src="/assets/behind-the-scenes.mp4"
+          type="video/mp4"
+        />
       </video>
     </section>
 
-    <section className="about-belief">
-      <div className="belief-photo"><img src="/assets/IMG_2689.jpeg" alt="A box of Miss Louise Bakery cookies ready to share" /></div>
-      <div className="belief-copy">
-        <span className="eyebrow plain">Why we bake</span>
-        <h2>Dessert is<br/><em>personal.</em></h2>
-        <p>At Miss Louise Bakery, we believe desserts can bring us together, make an occasion feel special, or simply make an ordinary day a little better.</p>
-        <p>Thank you for supporting our home bakery and allowing us to be part of your special moments, gatherings, and everyday celebrations.</p>
-        <div className="signature"><small>Always,</small><strong>From Louise, With Love.</strong></div>
-      </div>
-    </section>
-
     <section className="about-cta">
-      <img src="/assets/cherry-transparent.png" alt="" aria-hidden="true" />
-      <div><span className="eyebrow plain">Something sweet is waiting</span><h2>Ready for a treat?</h2></div>
-      <button className="button button-red" onClick={order}>Place an order <ArrowRight size={17}/></button>
+      <img
+        src="/assets/cherry-transparent.png"
+        alt=""
+        aria-hidden="true"
+      />
+
+      <div>
+        <span className="eyebrow plain">Thank you for being here</span>
+        <h2>Come share<br/><em>the sweetness.</em></h2>
+        <p>
+          Thank you for joining me on this journey! I hope y’all enjoy everything that we have to offer!
+        </p>
+        <div className="signature">
+          <small>With Love,</small>
+          <strong>Miss Louise</strong>
+        </div>
+      </div>
+
+      <button className="button button-red" onClick={order}>
+        Place an order <ArrowRight size={17}/>
+      </button>
     </section>
 
     <SiteFooter />
-    {notice && <div className="toast" role="status">{notice}<button onClick={() => setNotice('')}>×</button></div>}
+
+    {notice && (
+      <div className="toast" role="status">
+        {notice}
+        <button onClick={() => setNotice('')}>×</button>
+      </div>
+    )}
   </main>
 }
 
@@ -363,7 +417,7 @@ function ContactPage() {
       </aside>
     </section>
 
-    <section className="contact-kind-note"><img src="/assets/cherry-transparent.png" alt="" aria-hidden="true" /><p>Thank you for thinking of our home bakery for your celebrations, gatherings, and ordinary days.</p></section>
+    <section className="contact-kind-note"><img src="/assets/cherry-transparent.png" alt="" aria-hidden="true" /><p>Trusty homemade sweets for your celebrations, gatherings, and ordinary days.</p></section>
     <SiteFooter />
     {notice && <div className="toast" role="status">{notice}<button onClick={() => setNotice('')}>×</button></div>}
   </main>
